@@ -32,6 +32,7 @@ def test_find_trip_by_id():
     trips_repository = TripsRepository(conn)
 
     trip = trips_repository.find_trip_by_id(trip_id)
+    print()
     print(trip)
 
 
