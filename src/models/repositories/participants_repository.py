@@ -1,6 +1,6 @@
 from sqlite3 import Connection
 from typing import Dict, List, Tuple
-class PaticipantsRepository:
+class ParticipantsRepository:
     def __init__(self, conn: Connection) -> None:
         self.__conn = conn
 
