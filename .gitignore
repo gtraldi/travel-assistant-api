@@ -3,3 +3,16 @@
 venv
 .env
 *.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# Python compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system files
+.DS_Store
+Thumbs.db
