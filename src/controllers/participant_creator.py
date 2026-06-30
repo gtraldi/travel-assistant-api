@@ -1,5 +1,6 @@
 import uuid
 from typing import Dict
+from src.utils.validators import is_valid_email
 
 class ParticipantCreator:
     def __init__(self, participants_repository, emails_repository) -> None:
@@ -22,6 +23,13 @@ class ParticipantCreator:
                         "body": {"error": "Bad Request", "message": f"Missing required field: '{field}'"},
                         "status_code": 400
                     }
+
+            # Email format validation
+            if not is_valid_email(body["email"]):
+                return {
+                    "body": {"error": "Bad Request", "message": "Invalid email format"},
+                    "status_code": 400
+                }
 
             participant_id = str(uuid.uuid4())
             email_id = str(uuid.uuid4())

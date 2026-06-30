@@ -100,7 +100,8 @@ def invite_to_trip(tripId):
 def create_activity(tripId):
     conn = db_connection_handler.get_connection()
     activities_repository = ActivitiesRepository(conn)
-    controller = ActivityCreator(activities_repository)
+    trips_repository = TripsRepository(conn)
+    controller = ActivityCreator(activities_repository, trips_repository)
 
     response = controller.create(request.json, tripId)
 
