@@ -2,6 +2,7 @@ import uuid
 from typing import Dict
 
 from src.drivers.email_sender import send_email
+from src.utils.validators import is_valid_email, parse_date
 
 
 class TripCreator:
@@ -26,7 +27,36 @@ class TripCreator:
                         "status_code": 400
                     }
 
+            # Email format validation
+            if not is_valid_email(body["owner_email"]):
+                return {
+                    "body": {"error": "Bad Request", "message": "Invalid owner_email format"},
+                    "status_code": 400
+                }
+
+            # Date consistency validation
+            try:
+                start_dt = parse_date(body["start_date"])
+                end_dt = parse_date(body["end_date"])
+                if end_dt < start_dt:
+                    return {
+                        "body": {"error": "Bad Request", "message": "end_date cannot be before start_date"},
+                        "status_code": 400
+                    }
+            except ValueError as e:
+                return {
+                    "body": {"error": "Bad Request", "message": str(e)},
+                    "status_code": 400
+                }
+
             emails = body.get("emails_to_invite")
+            if emails:
+                for email in emails:
+                    if not is_valid_email(email):
+                        return {
+                            "body": {"error": "Bad Request", "message": f"Invalid email format in invites: '{email}'"},
+                            "status_code": 400
+                        }
 
             trip_id = str(uuid.uuid4())
             trip_infos = {**body, "id": trip_id}
