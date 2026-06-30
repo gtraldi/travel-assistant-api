@@ -9,6 +9,20 @@ class ParticipantCreator:
     
     def create(self, body, trip_id) -> Dict:
         try:
+            if not body or not isinstance(body, dict):
+                return {
+                    "body": {"error": "Bad Request", "message": "Invalid request body"},
+                    "status_code": 400
+                }
+
+            required_fields = ["email", "name"]
+            for field in required_fields:
+                if field not in body:
+                    return {
+                        "body": {"error": "Bad Request", "message": f"Missing required field: '{field}'"},
+                        "status_code": 400
+                    }
+
             participant_id = str(uuid.uuid4())
             email_id = str(uuid.uuid4())
 

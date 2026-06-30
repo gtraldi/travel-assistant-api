@@ -12,6 +12,20 @@ class TripCreator:
     
     def create(self, body) -> Dict:
         try:
+            if not body or not isinstance(body, dict):
+                return {
+                    "body": {"error": "Bad Request", "message": "Invalid request body"},
+                    "status_code": 400
+                }
+
+            required_fields = ["destination", "start_date", "end_date", "owner_name", "owner_email"]
+            for field in required_fields:
+                if field not in body:
+                    return {
+                        "body": {"error": "Bad Request", "message": f"Missing required field: '{field}'"},
+                        "status_code": 400
+                    }
+
             emails = body.get("emails_to_invite")
 
             trip_id = str(uuid.uuid4())

@@ -2,15 +2,19 @@ from typing import Dict
 
 
 class TripFinder:
-    def __init__(self, trips_repostiory) -> None:
-        self.__trips_repository = trips_repostiory
+    def __init__(self, trips_repository) -> None:
+        self.__trips_repository = trips_repository
 
     
     def find_trip_details(self, trip_id) -> Dict:
         try:
             trip = self.__trips_repository.find_trip_by_id(trip_id)
             
-            if not trip: raise Exception("No Trip Found")
+            if not trip:
+                return {
+                    "body": {"error": "Not Found", "message": "Trip not found"},
+                    "status_code": 404
+                }
 
             return {
                 "body": {

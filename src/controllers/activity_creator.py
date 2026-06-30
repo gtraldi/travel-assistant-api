@@ -8,6 +8,20 @@ class ActivityCreator:
     
     def create(self, body, trip_id) -> Dict:
         try:
+            if not body or not isinstance(body, dict):
+                return {
+                    "body": {"error": "Bad Request", "message": "Invalid request body"},
+                    "status_code": 400
+                }
+
+            required_fields = ["title", "occurs_at"]
+            for field in required_fields:
+                if field not in body:
+                    return {
+                        "body": {"error": "Bad Request", "message": f"Missing required field: '{field}'"},
+                        "status_code": 400
+                    }
+
             activity_id = str(uuid.uuid4())
             activities_infos = {
                 "id": activity_id,
